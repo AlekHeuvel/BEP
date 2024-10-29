@@ -11,13 +11,13 @@ electron_field_strength = q / permittivity # Becomes one in atomic units
 # Interaction between the two electrons
 def get_e_pot(r1, r2, kappa): 
     distance = pt.norm(r1 - r2, dim=0)
-    return np.exp(-kappa * distance) / distance
+    return pt.exp(-kappa * distance) / distance
 
 # Calculate electric field at origin created by electron at position r
 def get_E_at_dp(r, kappa):
     r_norm = pt.norm(r, dim=0)
     r_unit = r / r_norm
-    return -q * np.exp(-kappa * r_norm) / r_norm * (1/r_norm + kappa) * r_unit
+    return -q * pt.exp(-kappa * r_norm) / r_norm * (1/r_norm + kappa) * r_unit
 
 # Get the dipole moment of the dipole when the electrons are at positions r1 and r2
 def get_dp_moment(r1, r2, kappa, theta_ext, E_ext, d, h):
@@ -39,7 +39,7 @@ def get_dp_moment(r1, r2, kappa, theta_ext, E_ext, d, h):
 
 def get_dp_pot(m, r, kappa): # Potential at position r due to dipole with dipole moment m
     r_norm = pt.norm(r, dim=0)
-    return pt.sum(m * r, dim=0) / r_norm**3 * np.exp(-kappa * r_norm)                     
+    return pt.sum(m * r, dim=0) / r_norm**3 * pt.exp(-kappa * r_norm)                     
 
 # Get potential due to electron-dipole-electron interaction, for both electrons
 def get_pot(x1, x2, kappa, theta_ext, E_ext, d, h):
