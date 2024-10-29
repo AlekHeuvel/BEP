@@ -1,6 +1,6 @@
-PWD c:\Users\alekh\Desktop\BEP\Report
+PWD c:\Users\alekh\Desktop\BEP\Python\Report
 INPUT C:\Users\alekh\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\alekh\Desktop\BEP\Report\report.tex
+INPUT c:\Users\alekh\Desktop\BEP\Python\Report\report.tex
 OUTPUT report.log
 INPUT .\tudelft-report.cls
 INPUT tudelft-report.cls
