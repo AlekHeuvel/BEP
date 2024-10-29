@@ -1,0 +1,4 @@
+# Ignore old_redundant folder
+old_redundant/
+# Ignore Python/__pycache__
+Python/__pycache__/
