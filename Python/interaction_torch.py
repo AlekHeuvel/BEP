@@ -53,7 +53,8 @@ def get_pot(x1, x2, kappa, theta_ext, E_ext, d, h):
 
     # Calculate potential
     m = get_dp_moment(r1, r2, kappa, theta_ext, E_ext, d, h)
-    pot = get_dp_pot(m, r1, kappa) + get_dp_pot(m, r2, kappa) # + get_e_pot(r1, r2, kappa)
+    pot = get_dp_pot(m, r1, kappa) + get_dp_pot(m, r2, kappa) + get_e_pot(r1, r2, kappa)
+    print(f"Minimum potential of: {pt.min(pot.flatten()).item()} \nx1: {x1.flatten()[pt.argmin(pot.flatten())].item()} \nx2: {x2.flatten()[pt.argmin(pot.flatten())].item()}")
     return pt.clamp(pt.nan_to_num(pot, nan=0.0), max=1)
 
 def get_pot_difference(x1, x2, kappa, theta_ext, E_ext, d, h):
@@ -80,10 +81,11 @@ def get_pot_difference(x1, x2, kappa, theta_ext, E_ext, d, h):
     pot = get_dp_pot(m, r1, kappa) + get_dp_pot(m, r2, kappa)
     return pt.clamp(pt.nan_to_num(pot, nan=0.0), max=1)
 
-def get_potential_energy(x1, x2, kappa, theta_ext, E_ext, d, h, psi):
-    return pt.sum(get_pot(x1, x2, kappa, theta_ext, E_ext, d, h) * psi) / pt.sum(psi)
+def get_potential_energy(x1, x2, kappa, theta_ext, E_ext, d, h, psi_sq):
+    return pt.sum(get_pot(x1, x2, kappa, theta_ext, E_ext, d, h) * psi_sq) / pt.sum(psi_sq)
 
-def get_kinetic_energy(p1, p2, phi):
+def get_kinetic_energy(p1, p2, psi, psi_deriv):
+    return - 0.5 * pt.sum(psi * psi_deriv) / pt.sum(psi**2)
     return pt.sum(phi * p1 ** 2) / pt.sum(phi) + pt.sum(phi * p2 ** 2) / pt.sum(phi)
 
 def get_potential_diff(x1, x2, kappa, theta_ext, E_ext, d, h):
