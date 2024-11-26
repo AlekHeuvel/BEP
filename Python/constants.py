@@ -6,4 +6,4 @@ q = 1               # Elementary charge, defined as one in atomic units
 electron_field_strength = q / permittivity # Becomes one in atomic units
 
 # Other parameters
-dim_size = 10    # In units of bohr radius = 4 pi epsilon_0 h_bar^2 / (m_e e+^2), = 5.2917e-11 m
+dim_size = 6   # In units of bohr radius = 4 pi epsilon_0 h_bar^2 / (m_e e+^2), = 5.2917e-11 m

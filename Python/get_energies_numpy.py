@@ -1,7 +1,6 @@
-from timeit import timeit
 import torch as pt
 import numpy as np
-import interaction_torch as va
+import interaction_fast as va
 from constants import *
 import wavefunction as wf
 import scipy.optimize as opt
@@ -10,11 +9,11 @@ print(pt.cuda.is_available())
 pt.device("cuda" if pt.cuda.is_available() else "cpu")
 pt.set_default_tensor_type('torch.cuda.FloatTensor')
 # Model parameters
-theta_ext = np.pi/2
-E_ext = 2.672
-h = 0.625
-kappa = 0
-d = 1
+theta_ext = -np.pi/2
+E_ext = 3.75
+h = 0.5
+kappa = 0.1
+d = 2
 
 # Define grid
 x1 = pt.linspace(-dim_size, dim_size, resolution)
@@ -28,7 +27,7 @@ def get_E(opt):
     global a1
     global a2
     global b
-    a1, a2, b = opt[0], opt[1], opt[2]
+    a1, a2, b = opt[0], opt[1], 0.55
     b = max(min(b, 10), 0.1)
     # Get wavefunctions
     phi = wf.phi_sq(X1, X2, a1, a2, b)
@@ -47,11 +46,13 @@ def get_E(opt):
     print(f"POTENTIAL ENERGY: {pot_energy}\nKINETIC ENERGY: {kin_energy}\nTOTAL ENERGY: {total_energy}") 
     print(f"a1: {a1}, a2: {a2}, b: {b}\n")
     
-    return pot_energy.cpu().numpy()
+    return total_energy.cpu().numpy()
 
 # Constrain b to be positive
 lin_con = {'type': 'ineq', 'fun': lambda x: x[2]-1}
 
 
-a = opt.minimize(get_E, [-0.270, 0.266, 3], method='nelder-mead', options={'maxiter': 1000}, constraints=lin_con)
+a = opt.minimize(get_E, [0.2, -0.2], method='nelder-mead', options={'maxiter': 1000}, constraints=lin_con)
 print(a)
+
+# print(get_E([-0.1, 0.1, 1]))

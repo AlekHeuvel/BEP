@@ -33,6 +33,16 @@ def get_dp_moment(r1, r2, kappa, theta_ext, E_ext, d, h):
     E_at_dp = get_E_at_dp(r1, kappa) + get_E_at_dp(r2, kappa) + E_ext_mesh 
     E_at_dp_size = pt.norm(get_E_at_dp(r1, kappa) + get_E_at_dp(r2, kappa) + E_ext_mesh, dim=0)
     E_at_dp_unit = E_at_dp / E_at_dp_size
+    
+    # Calculate dipole angle:
+    E_at_dp = get_E_at_dp(r1, kappa) + E_ext_mesh 
+    E_at_dp_size = pt.norm(get_E_at_dp(r1, kappa) + E_ext_mesh, dim=0)
+    theta = pt.asin(E_at_dp[2, :, :] / E_at_dp_size)
+    theta = pt.nan_to_num(theta, nan=pt.pi/2.0)
+    # print maximal angle
+    print(f"Minimal angle: {pt.min(pt.abs(theta)).item() / pt.pi} pi")
+    # Print location r1 of maximal angle
+    print(f"Location of minimal angle: {r1.flatten()[pt.argmin(pt.abs(theta).flatten()).item()]}")
 
     # Return dipole moment
     return d * E_at_dp_unit
@@ -55,7 +65,7 @@ def get_pot(x1, x2, kappa, theta_ext, E_ext, d, h):
     m = get_dp_moment(r1, r2, kappa, theta_ext, E_ext, d, h)
     pot = get_dp_pot(m, r1, kappa) + get_dp_pot(m, r2, kappa) + get_e_pot(r1, r2, kappa)
     print(f"Minimum potential of: {pt.min(pot.flatten()).item()} \nx1: {x1.flatten()[pt.argmin(pot.flatten())].item()} \nx2: {x2.flatten()[pt.argmin(pot.flatten())].item()}")
-    return pt.clamp(pt.nan_to_num(pot, nan=0.0), max=1)
+    return pt.clamp(pt.nan_to_num(pot, nan=0.0), max=100)
 
 def get_pot_difference(x1, x2, kappa, theta_ext, E_ext, d, h):
     # Define position vectors on the grid
