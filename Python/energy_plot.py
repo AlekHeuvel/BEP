@@ -20,7 +20,7 @@ def get_E(a1, a2):
     kappa = 0.1
     theta_ext = -pt.pi/2
     E_ext = 2
-    h = 4.72
+    h = 1.5
     d = 2
     
     integral_scale = resolution**2 / (4*dim_size**2)
@@ -41,8 +41,8 @@ def get_E(a1, a2):
     total_energy = pot_energy + kin_energy
 
     # Print results
-    # print(f"Normalization status: {pt.sum(wf.psi_sq_normalized(X1, X2, a1, a2, b)) / integral_scale}")
-    # print(f"POTENTIAL ENERGY: {pot_energy}\nKINETIC ENERGY: {kin_energy}\nTOTAL ENERGY: {total_energy}") 
+    print(f"Normalization status: {pt.sum(wf.psi_sq_normalized(X1, X2, a1, a2, b)) / integral_scale}")
+    print(f"POTENTIAL ENERGY: {pot_energy}\nKINETIC ENERGY: {kin_energy}\nTOTAL ENERGY: {total_energy}") 
     print(f"a1: {a1}, a2: {a2}, b: {b}\n")
 
     return total_energy.cpu()
@@ -50,4 +50,4 @@ def get_E(a1, a2):
 for i in range(resolution):
     for j in range(resolution):
         results[i, j] = get_E(A1[i, j], A2[i, j])
-pt.save(results, "results_physical.pt")
+pt.save(results, "results_intermediate15.pt")

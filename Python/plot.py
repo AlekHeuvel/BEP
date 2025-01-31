@@ -1,6 +1,6 @@
 import torch as pt
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider
+    from matplotlib.widgets import Slider
 import interaction_fast as va
 import vectorized_relative as vr
 import wavefunction as wf
